@@ -3,7 +3,7 @@
 = Fram Animation =
 
 
-怎么使用动画:
+怎么使用drawable动画:
   # New Animation android xml file. animation.xml
 {{{
 <?xml version="1.0" encoding="utf-8"?>
