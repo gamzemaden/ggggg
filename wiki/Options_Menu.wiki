@@ -52,6 +52,6 @@ public class Main extends Activity {
     }
 }
 覆盖方法onCreateOptionsMenu(Menu menu)，加载mymenu.xml。
-覆盖方法onOptionsItemSelected(MenuItem item)，可以加入选项执行代码。
+覆盖方法onOptionsItemSelected(MenuItem item)，可以加入监听菜单选择的执行代码。
 }}}
   # 源代码：https://ggggg.googlecode.com/svn/trunk/AndroidbyLynda/Options_Menu/
