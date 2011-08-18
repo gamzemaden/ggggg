@@ -71,5 +71,4 @@ public class Main extends Activity {
 			}
 		});
 }}}
-  
   # 源代码 https://ggggg.googlecode.com/svn/trunk/AndroidbyLynda/Tween/
