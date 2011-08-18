@@ -28,7 +28,6 @@
 
 </set>
 }}}
-
   # 加一个button到main.xml里。
   # 在activity里加入让button使用效果的代码。
 {{{
