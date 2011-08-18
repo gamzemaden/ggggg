@@ -19,5 +19,4 @@
 	<item android:drawable="@drawable/camp_fire16" android:duration="30"/>
 	<item android:drawable="@drawable/camp_fire17" android:duration="30"/>
 	
-
 </animation-list>
