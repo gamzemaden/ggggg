@@ -66,3 +66,4 @@ public class Main extends Activity {
     }
 }
 }}}
+  # 源代码 http://ggggg.googlecode.com/svn/trunk/AndroidbyLynda/Frame_Animation/
