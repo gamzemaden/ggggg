@@ -56,5 +56,18 @@ public class Main extends Activity {
 	}
 }
 
+使用AlertDialog.Builder builder = new AlertDialog.Builder(Main.this);创建一个AlertDialog的builder。
+之后设置builder的内容。
+
+使用builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						Main.this.finish();
+					}
+				}); 设置alertdialog里的按钮，可以加入监听上下文按钮选择的执行代码。
+
+使用AlertDialog alertDialog = builder.create();用builder创建一个alertdialog
+使用alertDialog.show();显示创建的alertdialog。
 }}}
   # 源代码： 
