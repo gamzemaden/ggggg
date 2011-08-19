@@ -71,4 +71,4 @@ public class Main extends Activity {
 使用AlertDialog alertDialog = builder.create();用builder创建一个alertdialog
 使用alertDialog.show();显示创建的alertdialog。
 }}}
-  # 源代码： 
+  # 源代码： https://ggggg.googlecode.com/svn/trunk/AndroidbyLynda/Alert_Dialog/
