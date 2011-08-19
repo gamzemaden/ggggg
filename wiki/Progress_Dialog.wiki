@@ -57,7 +57,6 @@ public class Main extends Activity {
 
 使用final ProgressDialog progressDialog = new ProgressDialog(this); 创建一个progress dialog
 之后设置process dialog的内容。
-
 使用progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER); 设置style.
 使用progressDialog.setMessage("Just wait..."); 设置显示信息。
 使用progressDialog.show(); 显示创建的progressDialog。
