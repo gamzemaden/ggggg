@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AbsoluteLayout android:id="@+id/LinearLayout1" xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:weightSum="1" android:gravity="top">
+    <TableRow android:id="@+id/tableRow1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:baselineAligned="true"></TableRow>
+    <TextView android:id="@+id/textView1" android:textAppearance="?android:attr/textAppearanceLarge" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_x="3dp" android:layout_y="53dp" android:gravity="center" android:text="@string/title"></TextView>
+    <TextView android:id="@+id/textView2" android:textAppearance="?android:attr/textAppearanceMedium" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_x="33dp" android:layout_y="132dp" android:text="@string/sex"></TextView>
+    <RadioButton android:layout_width="wrap_content" android:id="@+id/radioButton1" android:layout_height="wrap_content" android:layout_x="124dp" android:layout_y="119dp" android:text="@string/man"></RadioButton>
+    <TextView android:id="@+id/textView3" android:textAppearance="?android:attr/textAppearanceMedium" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_x="32dp" android:layout_y="200dp" android:text="@string/height"></TextView>
+    <EditText android:id="@+id/editText1" android:layout_x="128dp" android:layout_height="wrap_content" android:layout_y="184dp" android:layout_width="93dp">
+        <requestFocus></requestFocus>
+    </EditText>
+    <TextView android:id="@+id/textView4" android:textAppearance="?android:attr/textAppearanceMedium" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_x="224dp" android:layout_y="198dp" android:text="@string/cm"></TextView>
+    <Button android:id="@+id/button1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_x="123dp" android:layout_y="286dp" android:text="@string/calc"></Button>
+    <RadioButton android:text="@string/woman" android:layout_width="wrap_content" android:id="@+id/radioButton2" android:layout_height="wrap_content" android:layout_x="195dp" android:layout_y="119dp"></RadioButton>
+</AbsoluteLayout>
