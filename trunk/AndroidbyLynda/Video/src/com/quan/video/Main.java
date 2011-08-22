@@ -3,6 +3,7 @@ package com.quan.video;
 import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
+import android.widget.MediaController;
 import android.widget.VideoView;
 
 public class Main extends Activity {
@@ -15,6 +16,8 @@ public class Main extends Activity {
 		VideoView videoView = (VideoView) findViewById(R.id.videoView1);
 		videoView.setVideoURI(Uri.parse("android.resource://com.quan.video/"
 				+ R.raw.monkey));
+		videoView.setMediaController(new MediaController(Main.this));
 		videoView.start();
+		videoView.requestFocus();
 	}
 }
