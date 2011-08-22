@@ -6,6 +6,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -39,7 +40,8 @@ public class Main extends Activity {
 						context, 0, intent, 0);
 				notification.setLatestEventInfo(context, title, details,
 						pendingIntent);
-
+				
+				notification.sound = Uri.parse("android.resource://com.quan.status/" + R.raw.birthdaysong);
 				notificationManager.notify((int) System.currentTimeMillis(),
 						notification);
 			}
