@@ -48,7 +48,7 @@ public class Main extends Activity {
 						context, 0, intent, 0);
 				notification.setLatestEventInfo(context, title, details,
 						pendingIntent);
-
+				notification.sound = Uri.parse("android.resource://com.quan.status/" + R.raw.birthdaysong);
 				notificationManager.notify((int) System.currentTimeMillis(),
 						notification);
 			}
@@ -63,6 +63,7 @@ public class Main extends Activity {
 创建一个notification。图标：android.R.drawable.stat_notify_more 显示的文字："This is important.\n Hello baby."
 notification里显示的系统时间：System.currentTimeMillis()
 点notification去的目的地：PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+设置声音： 				notification.sound = Uri.parse("android.resource://com.quan.status/" + R.raw.birthdaysong);
 产生notification：notificationManager.notify((int) System.currentTimeMillis(),notification); id不一样产生的notification就不同。
 }}}
   # 源代码： https://ggggg.googlecode.com/svn/trunk/AndroidbyLynda/Status/
