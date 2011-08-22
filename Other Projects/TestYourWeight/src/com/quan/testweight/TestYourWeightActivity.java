@@ -25,10 +25,10 @@ public class TestYourWeightActivity extends Activity {
 				String sex;
 		        RadioButton radioButton = (RadioButton) findViewById(R.id.radioButton1);
 		        if(radioButton.isChecked()){
-		        	sex = "ÄÐÐÔ";
+		        	sex = "ç”·æ€§";
 		        }
 		        else
-		        	sex = "Å®ÐÔ";
+		        	sex = "å¥³æ€§";
 		        
 		        double height;
 		        EditText editText = (EditText) findViewById(R.id.editText1);
