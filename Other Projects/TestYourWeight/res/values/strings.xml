@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hello">Hello World, TestYourWeightActivity!</string>
+    <string name="app_name">TestYourWeight</string>
+    <string name="title">测试你的标准体重</string>
+    <string name="sex">性别：</string>
+    <string name="man">男的</string>
+    <string name="woman">女的</string>
+    <string name="height">身高：</string>
+    <string name="cm">cm</string>
+    <string name="calc">计算</string>
+</resources>
