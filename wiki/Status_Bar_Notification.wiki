@@ -55,18 +55,14 @@ public class Main extends Activity {
 		});
 	}
 }
-使用NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-获得notificationmanager.
+使用NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE); 获得notificationmanager.
 使用Notification notification = new Notification(
 						android.R.drawable.stat_notify_more,
 						"This is important.\n Hello baby.", System
 								.currentTimeMillis());
 创建一个notification。图标：android.R.drawable.stat_notify_more 显示的文字："This is important.\n Hello baby."
-notification里显示的系统时间：System.currentTimeMillis())
-点notification去的目的地：PendingIntent pendingIntent = PendingIntent.getActivity(
-						context, 0, intent, 0);
-产生notification：notificationManager.notify((int) System.currentTimeMillis(),
-						notification);
-id不一样产生的notification就不同。
+notification里显示的系统时间：System.currentTimeMillis()
+点notification去的目的地：PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+产生notification：notificationManager.notify((int) System.currentTimeMillis(),notification); id不一样产生的notification就不同。
 }}}
-  # 源代码： https://ggggg.googlecode.com/svn/trunk/AndroidbyLynda/Alert_Dialog/
+  # 源代码： https://ggggg.googlecode.com/svn/trunk/AndroidbyLynda/Status/
