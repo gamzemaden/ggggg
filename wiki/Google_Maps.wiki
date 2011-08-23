@@ -114,7 +114,9 @@ public class Main extends MapActivity {
 			
 			@Override
 			public void onLocationChanged(Location location) {
-				mapController.setCenter(new GeoPoint((int)location.getLatitude(), (int) location.getLongitude()));
+				double geoLatitude = location.getLatitude()*1E6;
+		        double geoLongitude = location.getLongitude()*1E6;
+				mapController.setCenter(new GeoPoint((int) geoLatitude, (int) geoLongitude));
 			}
 		};
 		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
@@ -132,8 +134,11 @@ public class Main extends MapActivity {
 使用LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE); 得到locationmanager
 使用LocationListener locationListener = new LocationListener() new一个locationlistener
 使用public void onLocationChanged(Location location) {
-				mapController.setCenter(new GeoPoint((int)location.getLatitude(), (int) location.getLongitude()));
-			} 把设置地图位置注册在位置改变事件上。
+				double geoLatitude = location.getLatitude()*1E6;
+		        double geoLongitude = location.getLongitude()*1E6;
+				mapController.setCenter(new GeoPoint((int) geoLatitude, (int) geoLongitude));
+			} 把设置地图位置注册在位置改变事件上。E6 是微度（microdegrees），就是度数再乘以1000000。GeoPoint(int latitudeE6, int longitudeE6) 需要的参数是微度为单位的。
+			
 使用locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener); 把位置改变的listener注册在  provider上。
 }}}  
   # 源代码： https://ggggg.googlecode.com/svn/trunk/AndroidbyLynda/Maps/
