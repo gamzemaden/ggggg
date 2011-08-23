@@ -36,7 +36,7 @@ nli\.android\debug.keystore -storepass android -keypass android
 </LinearLayout>
 使用android:apiKey="00lwICTOKl4fzQTRsMMPVXNkFR82S5KDiPD7C5g"， 指定apiKey。
 }}}
-  # 在AndroidManifest.xml里加入inernet权限。
+  # 在AndroidManifest.xml里加入inernet权限。为了访问GPS加入GPS的权限
   # 在AndroidManifest.xml里加入对google maps API的引用。
 {{{
 <?xml version="1.0" encoding="utf-8"?>
@@ -46,6 +46,7 @@ nli\.android\debug.keystore -storepass android -keypass android
       android:versionName="1.0">
     <uses-sdk android:minSdkVersion="10" />
     <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"></uses-permission>
 
     <application android:icon="@drawable/icon" android:label="@string/app_name">
         <uses-library android:name="com.google.android.maps"/>
@@ -58,17 +59,24 @@ nli\.android\debug.keystore -storepass android -keypass android
         </activity>
 
     </application>
-</manifest>  
+</manifest>
 使用<uses-library android:name="com.google.android.maps"/> 加入对google maps api的引用。
+使用<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"></uses-permission> 加入访问GPS的权限。
 }}}
   # 在activity里加入代码。
 {{{
 package com.quan.maps;
 
+import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
+import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
 
 import android.app.Activity;
+import android.content.Context;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 
 public class Main extends MapActivity {
@@ -80,6 +88,36 @@ public class Main extends MapActivity {
         
         MapView mapView = (MapView) findViewById(R.id.themap);
         mapView.setBuiltInZoomControls(true);
+        
+        final MapController mapController = mapView.getController();
+        
+		LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+		LocationListener locationListener = new LocationListener() {
+			
+			@Override
+			public void onStatusChanged(String provider, int status, Bundle extras) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onProviderEnabled(String provider) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onProviderDisabled(String provider) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onLocationChanged(Location location) {
+				mapController.setCenter(new GeoPoint((int)location.getLatitude(), (int) location.getLongitude()));
+			}
+		};
+		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
     }
 
 	@Override
@@ -88,7 +126,14 @@ public class Main extends MapActivity {
 		return false;
 	}
 }
+
 使用public class Main extends MapActivity 继承MapActivity。
 使用mapView.setBuiltInZoomControls(true); 加入zoom control。
+使用LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE); 得到locationmanager
+使用LocationListener locationListener = new LocationListener() new一个locationlistener
+使用public void onLocationChanged(Location location) {
+				mapController.setCenter(new GeoPoint((int)location.getLatitude(), (int) location.getLongitude()));
+			} 把设置地图位置注册在位置改变事件上。
+使用locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener); 把位置改变的listener注册在  provider上。
 }}}  
   # 源代码： https://ggggg.googlecode.com/svn/trunk/AndroidbyLynda/Maps/
