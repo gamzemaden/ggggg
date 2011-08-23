@@ -86,4 +86,4 @@ public class Main extends Activity {
 使用Intent intent = new Intent(Main.this, Preferences.class); startActivity(intent); 切换到preferenceactivity。
 每个app对应一个sharepreferences，设置的值会自动存到里面去。
 }}}
-  # 源代码： https://ggggg.googlecode.com/svn/trunk/AndroidbyLynda/Shared_Preferences/
+  # 源代码：https://ggggg.googlecode.com/svn/trunk/AndroidbyLynda/Preferences_Activity/
