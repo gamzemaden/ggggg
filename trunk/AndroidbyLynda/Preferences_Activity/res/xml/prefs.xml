@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    
+    <CheckBoxPreference 
+    	android:key="first" 
+    	android:title="First Option"
+    	android:summary="This is the first oprtion."/>
+    <CheckBoxPreference 
+    	android:key="second" 
+    	android:title="Second Option"
+    	android:summary="This is the second oprtion."/>    
+    
+</PreferenceScreen>
