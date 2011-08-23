@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.provider.ContactsContract.PhoneLookup;
+import android.widget.ListView;
 import android.widget.TextView;
 
 public class Main extends Activity {
