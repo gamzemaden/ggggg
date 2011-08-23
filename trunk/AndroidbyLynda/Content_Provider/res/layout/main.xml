@@ -3,6 +3,6 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    >
-    <TextView android:id="@+id/textView1" android:layout_width="match_parent" android:layout_height="match_parent" android:text="Contact Names:"></TextView>
+    android:weightSum="1">
+    <TextView android:id="@+id/textView1" android:layout_width="match_parent" android:text="Contact Names:" android:layout_weight="0.19" android:layout_height="match_parent"></TextView>
 </LinearLayout>
