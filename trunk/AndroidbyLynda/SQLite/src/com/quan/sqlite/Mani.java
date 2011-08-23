@@ -14,18 +14,15 @@ public class Mani extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 
-		SQLiteDatabase sqLiteDatabase = openOrCreateDatabase("MyDB1",
+		SQLiteDatabase sqLiteDatabase = openOrCreateDatabase("MyDB3",
 				MODE_PRIVATE, null);
 		sqLiteDatabase
 				.execSQL("CREATE TABLE IF NOT EXISTS MyTable (LastName VARCHAR, FristName VARCHAR, Age INT(3));");
 		sqLiteDatabase
-				.execSQL("INSERT INTO MyTable VALUES ('Li','Quan','29');");
+				.execSQL("INSERT INTO MyTable VALUES ('Lee','Quan','29');");
 		sqLiteDatabase.execSQL("INSERT INTO MyTable VALUES ('He','Yu','27');");
-		sqLiteDatabase.close();
-		
-		SQLiteDatabase sqLiteDatabase1 = openOrCreateDatabase("MyDB1",
-				MODE_PRIVATE, null);
-		Cursor cursor = sqLiteDatabase1.rawQuery("SELECT * FROM MyTable;", null);
+
+		Cursor cursor = sqLiteDatabase.rawQuery("SELECT * FROM MyTable;", null);
 		cursor.moveToFirst();
 		String str = cursor.getString(cursor.getColumnIndex("FristName")) + " "
 				+ cursor.getString(cursor.getColumnIndex("LastName"));
@@ -36,6 +33,6 @@ public class Mani extends Activity {
 		
 		TextView textView = (TextView) findViewById(R.id.textView1);
 		textView.setText(str);
-		sqLiteDatabase1.close();
+		sqLiteDatabase.close();
 	}
 }
