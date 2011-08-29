@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">盐巴</string>
+	<string name="titleYamba">盐巴</string>
+	<string name="titleStatusUpdate">你的状态</string>
+	<string name="hitText">请输入你的状态留言（140）</string>
+	<string name="buttonUpdate">上传</string>
+	<string name="titlePrefs">设置</string>
+	<string name="titleUsername">用户名</string>
+    <string name="titlePassword">密码</string>
+
+</resources>

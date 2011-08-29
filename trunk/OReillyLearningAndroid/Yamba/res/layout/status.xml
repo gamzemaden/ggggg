@@ -1,16 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:orientation="vertical" android:layout_width="fill_parent"
-	android:layout_height="fill_parent" android:weightSum="1">
+	android:layout_height="fill_parent" android:weightSum="1"
+	android:background="@drawable/background">
+	
 	<TextView android:layout_height="wrap_content"
 		android:textAppearance="?android:attr/textAppearanceLarge"
 		android:layout_width="match_parent" android:gravity="center"
-		android:layout_weight="0.07"
-		android:text="@string/titleStatusUpdate" />
-	<EditText android:layout_width="match_parent" android:gravity="top" android:layout_weight="0.93"
-		android:layout_height="wrap_content" android:text="@string/hitText" android:id="@+id/editTextStatus">
+		android:layout_weight="0.07" android:text="@string/titleStatusUpdate"
+		android:textColor="@android:color/white" />
+	
+	<TextView android:layout_height="wrap_content"
+		android:layout_width="wrap_content" android:layout_gravity="right"
+		android:id="@+id/textViewCount" android:layout_marginRight="10dp"
+		android:text="000" />
+	
+	<EditText android:layout_width="match_parent"
+		android:layout_weight="0.93" android:id="@+id/editTextStatus"
+		android:background="#cfff" android:layout_height="wrap_content" android:hint="@string/hitText" android:gravity="top|center_horizontal">
 		<requestFocus />
 	</EditText>
+	
 	<Button android:layout_height="wrap_content"
-		android:layout_width="match_parent" android:text="@string/buttonUpdate" android:id="@+id/buttonUpdateStatus"/>
+		android:layout_width="match_parent" android:text="@string/buttonUpdate"
+		android:id="@+id/buttonUpdateStatus" />
 </LinearLayout>
