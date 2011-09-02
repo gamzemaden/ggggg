@@ -6,6 +6,11 @@ import android.app.Activity;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.text.format.DateUtils;
+import android.view.View;
+import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
+import android.widget.SimpleCursorAdapter.ViewBinder;
 import android.widget.TextView;
 
 public class TimelineActivity extends Activity {
@@ -13,14 +18,18 @@ public class TimelineActivity extends Activity {
 	DbHelper dbHelper;
 	SQLiteDatabase db;
 	Cursor cursor;
-	TextView textTimeline;
+	ListView listTimeline;
+	SimpleCursorAdapter adapter;
+	static final String[] FROM = { StatusData.C_CREATED_AT, StatusData.C_USER,
+			StatusData.C_TEXT };
+	static final int[] TO = { R.id.textCreatedAt, R.id.textUser, R.id.textText };
 	StatusData statusData = new StatusData(this);
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		setContentView(R.layout.timeline_basic);
+		setContentView(R.layout.timeline);
 
-		textTimeline = (TextView) findViewById(R.id.textTimeline);
+		listTimeline = (ListView) findViewById(R.id.listTimeline);
 
 		dbHelper = statusData.new DbHelper(this);
 		db = dbHelper.getReadableDatabase();
@@ -40,14 +49,25 @@ public class TimelineActivity extends Activity {
 				StatusData.C_CREATED_AT + " DESC");
 		startManagingCursor(cursor);
 
-		String user, text, output;
-		while (cursor.moveToNext()) {
-			user = cursor.getString(cursor.getColumnIndex(StatusData.C_USER));
-			text = cursor.getString(cursor.getColumnIndex(StatusData.C_TEXT));
-			output = String.format("%s: %s\n", user, text);
-			textTimeline.append(output);
-		}
+		adapter = new SimpleCursorAdapter(this, R.layout.row, cursor, FROM, TO);
+		adapter.setViewBinder(VIEW_BINDER);
+		listTimeline.setAdapter(adapter);
 		super.onResume();
 	}
+
+	static final ViewBinder VIEW_BINDER = new ViewBinder() {
+
+		@Override
+		public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
+			if (view.getId() != R.id.textCreatedAt)
+				return false;
+
+			long timestamp = cursor.getLong(columnIndex);
+			CharSequence relTime = DateUtils.getRelativeTimeSpanString(
+					view.getContext(), timestamp);
+			((TextView)view).setText(relTime);
+			return true;
+		}
+	};
 
 }
