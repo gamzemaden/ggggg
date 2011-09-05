@@ -1,9 +1,13 @@
 package com.quan.yamba;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
@@ -20,31 +24,44 @@ public class TimelineActivity extends BaseActivity {
 			StatusData.C_TEXT };
 	static final int[] TO = { R.id.textCreatedAt, R.id.textUser, R.id.textText };
 	StatusData statusData = new StatusData(this);
+	TimelineReceiver receiver;
+	IntentFilter filter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
 		setContentView(R.layout.timeline);
 
 		if (yambaApplication.getPrefs().getString("username", null) == null) {
 			startActivity(new Intent(this, PrefsActivity.class));
-			Toast.makeText(this, R.string.msgSetupPrefs, Toast.LENGTH_LONG)
-					.show();
+			Toast.makeText(this, R.string.msgSetupPrefs, Toast.LENGTH_LONG).show();
 		}
 
 		listTimeline = (ListView) findViewById(R.id.listTimeline);
-		super.onCreate(savedInstanceState);
+		
+		receiver = new TimelineReceiver(); 
+		filter = new IntentFilter("com.quan.yamba.NEW_STATUS");
 	}
 
 	@Override
 	protected void onDestroy() {
-		yambaApplication.getStatusData().close();
 		super.onDestroy();
+		yambaApplication.getStatusData().close();
 	}
 
 	@Override
 	protected void onResume() {
-		this.setupList();
 		super.onResume();
+		
+		this.setupList();
+		
+		registerReceiver(receiver, filter);
+	}
+	
+	@Override
+	protected void onPause() {
+		super.onPause();
+		unregisterReceiver(receiver);
 	}
 
 	private void setupList() {
@@ -70,5 +87,14 @@ public class TimelineActivity extends BaseActivity {
 			return true;
 		}
 	};
+
+	class TimelineReceiver extends BroadcastReceiver {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			cursor.requery();
+			adapter.notifyDataSetChanged();
+			Log.d("TimelineReceiver", "onReceived");
+		}
+	}
 
 }

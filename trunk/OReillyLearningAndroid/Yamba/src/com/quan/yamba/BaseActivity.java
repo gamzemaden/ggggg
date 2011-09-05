@@ -21,7 +21,7 @@ public class BaseActivity extends Activity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater menuInflater = getMenuInflater();
 		menuInflater.inflate(R.menu.menu, menu);
-		return super.onCreateOptionsMenu(menu);
+		return true;
 	}
 
 	@Override
@@ -65,6 +65,6 @@ public class BaseActivity extends Activity {
 			toggoleItem.setTitle(R.string.titleServiceStart);
 			toggoleItem.setIcon(android.R.drawable.ic_media_play);
 		}
-		return super.onMenuOpened(featureId, menu);
+		return true;
 	}
 }
