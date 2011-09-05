@@ -3,16 +3,12 @@ package com.quan.yamba;
 import winterwell.jtwitter.Twitter;
 import winterwell.jtwitter.TwitterException;
 import android.app.Activity;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -104,29 +100,5 @@ public class StatusActivity extends Activity implements OnClickListener,
 
 	@Override
 	public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater menuInflater = getMenuInflater();
-		menuInflater.inflate(R.menu.menu, menu);
-		return super.onCreateOptionsMenu(menu);
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case R.id.itemServiceStart:
-			startService(new Intent(this, UpdaterService.class));
-			break;
-		case R.id.itemServiceStop:
-			stopService(new Intent(this, UpdaterService.class));
-			break;
-		case R.id.itemPrefs:
-			//startActivity(new Intent(this, PrefsActivity.class));
-			startActivity(new Intent(this, TimelineActivity.class));
-			break;
-		}
-		return true;
 	}
 }

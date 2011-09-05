@@ -20,27 +20,27 @@ public class YambaApplication extends Application implements
 	private SharedPreferences prefs;
 	private StatusData statusData;
 
-	public boolean isServiceRunning(){
+	public boolean isServiceRunning() {
 		return serviceRunning;
 	}
-	
-	public void setServiceRunning(boolean serviceRunning){
+
+	public void setServiceRunning(boolean serviceRunning) {
 		this.serviceRunning = serviceRunning;
 	}
-	
+
 	@Override
 	public void onCreate() {
 		this.prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		this.prefs.registerOnSharedPreferenceChangeListener(this);
 		this.statusData = new StatusData(this);
 		Log.i(TAG, "onCreated");
-		
-        //��Ĭ�ϵ�apiRoot��http://yamba.marakana.com/api
-        if (prefs.getString("apiRoot", "") == "") {
-            Editor editor = prefs.edit();
-            editor.putString("apiRoot", "http://yamba.marakana.com/api");
-            editor.commit();
-		}  
+
+		// ��Ĭ�ϵ�apiRoot��http://yamba.marakana.com/api
+		if (prefs.getString("apiRoot", "") == "") {
+			Editor editor = prefs.edit();
+			editor.putString("apiRoot", "http://yamba.marakana.com/api");
+			editor.commit();
+		}
 		super.onCreate();
 	}
 
@@ -68,21 +68,26 @@ public class YambaApplication extends Application implements
 			String arg1) {
 		this.twitter = null;
 	}
-	
-	public StatusData getStatusData(){
+
+	public StatusData getStatusData() {
 		return statusData;
 	}
-	
-	public synchronized int fetchStatusUpdates(){
+
+	public SharedPreferences getPrefs() {
+		return prefs;
+	}
+
+	public synchronized int fetchStatusUpdates() {
 		Log.d(TAG, "Fetching status updates");
 		Twitter twitter = this.getTwitter();
-		if(twitter == null){
+		if (twitter == null) {
 			Log.d(TAG, "Twitter connection info not initialized");
 			return 0;
 		}
 		try {
 			List<Status> statusUpdates = twitter.getFriendsTimeline();
-			long latestStatusCreatedAtTime = this.getStatusData().getLatestStatusCreatedAtTime();
+			long latestStatusCreatedAtTime = this.getStatusData()
+					.getLatestStatusCreatedAtTime();
 			int count = 0;
 			ContentValues contentValues = new ContentValues();
 			for (Status status : statusUpdates) {
@@ -90,14 +95,16 @@ public class YambaApplication extends Application implements
 				long createdAt = status.getCreatedAt().getTime();
 				contentValues.put(StatusData.C_CREATED_AT, createdAt);
 				contentValues.put(StatusData.C_TEXT, status.getText());
-				contentValues.put(StatusData.C_USER, status.getUser().getName());
+				contentValues
+						.put(StatusData.C_USER, status.getUser().getName());
 				Log.d(TAG, "Got update with id " + status.getId() + ". Saving");
 				this.getStatusData().insertOrIgnore(contentValues);
-				if(latestStatusCreatedAtTime < createdAt){
+				if (latestStatusCreatedAtTime < createdAt) {
 					count++;
 				}
 			}
-			Log.d(TAG, count > 0 ? "Got" + count + " status updates" : "No new staus updates");
+			Log.d(TAG, count > 0 ? "Got" + count + " status updates"
+					: "No new staus updates");
 			return count;
 		} catch (RuntimeException e) {
 			Log.e(TAG, "Failed to fetch status updates", e);
