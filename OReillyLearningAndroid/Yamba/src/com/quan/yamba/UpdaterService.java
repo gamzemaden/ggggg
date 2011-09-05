@@ -53,6 +53,7 @@ public class UpdaterService extends Service {
 	}
 
 	private class Updater extends Thread {
+		Intent intent;
 
 		public Updater() {
 			super("UpdaterService-Updater");
@@ -69,6 +70,9 @@ public class UpdaterService extends Service {
 					int newUpdates = yamba.fetchStatusUpdates();
 					if (newUpdates > 0) {
 						Log.d(TAG, "We have a new status");
+						intent = new Intent(NEW_STATUS_INTENT);
+						intent.putExtra(NEW_STATUS_EXTRA_COUNT, newUpdates);
+						updaterService.sendBroadcast(intent);
 					}
 					Thread.sleep(DELAY);
 				} catch (InterruptedException e) {

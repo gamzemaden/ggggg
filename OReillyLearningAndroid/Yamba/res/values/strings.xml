@@ -19,5 +19,11 @@
     <string name="titleTimeline">Timeline</string>
     <string name="titlePurge">Purge</string>
     <string name="msgAllDataPurged">All data purged.</string>
-    <string name="msgSetupPrefs">You must setup first.</string>
+    <string name="msgSetupPrefs">You must setup prefs first.</string>
+    <string name="send_timeline_notifications_permission_label">send timeline notifications permission label</string>
+    <string name="send_timeline_notifications_permission_description">send timeline notifications permission description</string>
+    <string name="receive_timeline_notifications_permission_label">receive timeline notifications permission label</string>
+    <string name="receive_timeline_notifications_permission_description">receive timeline notifications permission description</string>
+    
+    
 </resources>
