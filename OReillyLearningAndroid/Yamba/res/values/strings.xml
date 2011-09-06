@@ -24,6 +24,7 @@
     <string name="send_timeline_notifications_permission_description">send timeline notifications permission description</string>
     <string name="receive_timeline_notifications_permission_label">receive timeline notifications permission label</string>
     <string name="receive_timeline_notifications_permission_description">receive timeline notifications permission description</string>
+    <string name="msgLastTimelineUpdate">Last Timeline Update</string>
     
     
 </resources>

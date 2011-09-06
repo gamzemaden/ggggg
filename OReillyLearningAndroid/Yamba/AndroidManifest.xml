@@ -6,6 +6,9 @@
 	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"></uses-permission>
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>
 
+	<uses-permission android:name="com.quan.yamba.SEND_TIMELINE_NOTIFICATIONS" />
+	<uses-permission android:name="com.quan.yamba.RECEIVE_TIMELINE_NOTIFICATIONS" />
+
 	<permission android:name="com.quan.yamba.SEND_TIMELINE_NOTIFICATIONS"
 		android:label="@string/send_timeline_notifications_permission_label"
 		android:description="@string/send_timeline_notifications_permission_description"
@@ -18,8 +21,6 @@
 		android:permissionGroup="android.permission-group.PERSONAL_INFO"
 		android:protectionLevel="normal" />
 
-	<uses-permission android:name="com.quan.yamba.SEND_TIMELINE_NOTIFICATIONS" />
-	<uses-permission android:name="com.quan.yamba.RECEIVE_TIMELINE_NOTIFICATIONS" />
 
 	<application android:icon="@drawable/icon" android:label="@string/app_name"
 		android:name=".YambaApplication">
@@ -41,6 +42,20 @@
 			<intent-filter>
 				<action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
 			</intent-filter>
+		</receiver>
+
+		<provider android:name=".StatusProvider" android:authorities="com.quan.yamba.statusprovider" />
+
+		<receiver android:label="@string/msgLastTimelineUpdate"
+			android:name=".YambaWidget">
+			<intent-filter>
+				<action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+			</intent-filter>
+			<intent-filter>
+				<action android:name="com.quan.yamba.NEW_STATUS" />
+			</intent-filter>
+			<meta-data android:name="android.appwidget.provider"
+				android:resource="@xml/yamba_widget_info" />
 		</receiver>
 
 	</application>
