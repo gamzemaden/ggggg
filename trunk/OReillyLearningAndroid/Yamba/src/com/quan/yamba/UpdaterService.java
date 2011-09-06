@@ -7,9 +7,14 @@ import android.os.IBinder;
 import android.util.Log;
 
 public class UpdaterService extends Service {
+	public static final String NEW_STATUS_INTENT = "com.quan.yamba.NEW_STATUS";
+	public static final String NEW_STATUS_EXTRA_COUNT = "NEW_STATUS_EXTRA_COUNT";
+	public static final String RECEIVE_TIMELINE_NOTIFICATIONS = "com.quan.yamba.RECEIVE_TIMELINE_NOTIFICATIONS";
+
+
 	private static final String TAG = "UpdaterService";
 
-	static final int DELAY = 60000;
+	static final int DELAY = 10000;
 	private boolean runFlag = false;
 	private Updater updater;
 	private YambaApplication yamba;
@@ -72,7 +77,9 @@ public class UpdaterService extends Service {
 						Log.d(TAG, "We have a new status");
 						intent = new Intent(NEW_STATUS_INTENT);
 						intent.putExtra(NEW_STATUS_EXTRA_COUNT, newUpdates);
-						updaterService.sendBroadcast(intent);
+						updaterService.sendBroadcast(intent,
+								RECEIVE_TIMELINE_NOTIFICATIONS);
+//						updaterService.sendBroadcast(intent);
 					}
 					Thread.sleep(DELAY);
 				} catch (InterruptedException e) {

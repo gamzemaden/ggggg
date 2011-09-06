@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 public class TimelineActivity extends BaseActivity {
 
+	static final String SEND_TIMELINE_NOTIFICATIONS = "com.quan.yamba.SEND_TIMELINE_NOTIFICATIONS";
 	Cursor cursor;
 	ListView listTimeline;
 	SimpleCursorAdapter adapter;
@@ -38,9 +39,9 @@ public class TimelineActivity extends BaseActivity {
 		}
 
 		listTimeline = (ListView) findViewById(R.id.listTimeline);
-		
-		receiver = new TimelineReceiver(); 
-		filter = new IntentFilter("com.quan.yamba.NEW_STATUS");
+
+		receiver = new TimelineReceiver();
+		filter = new IntentFilter(UpdaterService.NEW_STATUS_INTENT);
 	}
 
 	@Override
@@ -52,12 +53,12 @@ public class TimelineActivity extends BaseActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		
+
 		this.setupList();
-		
-		registerReceiver(receiver, filter);
+
+		registerReceiver(receiver, filter, SEND_TIMELINE_NOTIFICATIONS, null);
 	}
-	
+
 	@Override
 	protected void onPause() {
 		super.onPause();
@@ -91,8 +92,9 @@ public class TimelineActivity extends BaseActivity {
 	class TimelineReceiver extends BroadcastReceiver {
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			cursor.requery();
-			adapter.notifyDataSetChanged();
+			// cursor.requery();
+			// adapter.notifyDataSetChanged();
+			setupList();
 			Log.d("TimelineReceiver", "onReceived");
 		}
 	}

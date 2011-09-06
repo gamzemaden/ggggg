@@ -39,7 +39,7 @@ public class BaseActivity extends Activity {
 					.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT));
 			break;
 		case R.id.itemPurge:
-//			((YambaApplication) getApplication()).getStatusData().delete();
+			((YambaApplication) getApplication()).getStatusData().delete();
 			Toast.makeText(this, R.string.msgAllDataPurged, Toast.LENGTH_LONG)
 					.show();
 			break;
