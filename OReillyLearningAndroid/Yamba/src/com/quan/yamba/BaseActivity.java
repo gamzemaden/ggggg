@@ -27,12 +27,8 @@ public class BaseActivity extends Activity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case R.id.itemToggleService:
-			if (yambaApplication.isServiceRunning()) {
-				stopService(new Intent(this, UpdaterService.class));
-			} else {
-				startService(new Intent(this, UpdaterService.class));
-			}
+		case R.id.itemRefresh:
+			startService(new Intent(this, UpdaterService.class));
 			break;
 		case R.id.itemPrefs:
 			startActivity(new Intent(this, PrefsActivity.class)
@@ -42,6 +38,7 @@ public class BaseActivity extends Activity {
 			((YambaApplication) getApplication()).getStatusData().delete();
 			Toast.makeText(this, R.string.msgAllDataPurged, Toast.LENGTH_LONG)
 					.show();
+			sendBroadcast(new Intent(UpdaterService.NEW_STATUS_INTENT));
 			break;
 		case R.id.itmeTimeline:
 			startActivity(new Intent(this, TimelineActivity.class).addFlags(
@@ -51,19 +48,6 @@ public class BaseActivity extends Activity {
 		case R.id.itmeStatus:
 			startActivity(new Intent(this, StatusActivity.class)
 					.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT));
-		}
-		return true;
-	}
-
-	@Override
-	public boolean onMenuOpened(int featureId, Menu menu) {
-		MenuItem toggoleItem = menu.findItem(R.id.itemToggleService);
-		if (yambaApplication.isServiceRunning()) {
-			toggoleItem.setTitle(R.string.titleServiceStop);
-			toggoleItem.setIcon(android.R.drawable.ic_media_pause);
-		} else {
-			toggoleItem.setTitle(R.string.titleServiceStart);
-			toggoleItem.setIcon(android.R.drawable.ic_media_play);
 		}
 		return true;
 	}

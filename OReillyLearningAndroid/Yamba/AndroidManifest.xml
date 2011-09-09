@@ -20,6 +20,8 @@
 		android:description="@string/receive_timeline_notifications_permission_description"
 		android:permissionGroup="android.permission-group.PERSONAL_INFO"
 		android:protectionLevel="normal" />
+	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"></uses-permission>
+	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"></uses-permission>
 
 
 	<application android:icon="@drawable/icon" android:label="@string/app_name"

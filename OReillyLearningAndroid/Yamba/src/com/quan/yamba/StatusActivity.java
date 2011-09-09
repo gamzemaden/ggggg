@@ -3,6 +3,9 @@ package com.quan.yamba;
 import winterwell.jtwitter.Twitter;
 import winterwell.jtwitter.TwitterException;
 import android.graphics.Color;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
@@ -16,11 +19,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class StatusActivity extends BaseActivity implements OnClickListener,
-		TextWatcher {
+		TextWatcher, LocationListener {
 	private static final String TAG = "StatusActivity";
+	private static final long LOCATION_MIN_TIME = 3600000; // One hour
+	private static final float LOCATION_MIN_DISTANCE = 1000; // One kilometter
 	EditText editText;
 	Button updateButton;
 	TextView textCount;
+	LocationManager locationManager;
+	Location location;
+	String provider;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -40,13 +48,45 @@ public class StatusActivity extends BaseActivity implements OnClickListener,
 		Log.d(TAG, getFilesDir().toString());
 	}
 
+	@Override
+	protected void onResume() {
+		super.onResume();
+
+		provider = yambaApplication.getProvider();
+		if (!YambaApplication.LOCATION_PROVIDER_NONE.equals(provider)) {
+			locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+			Log.d(TAG, "provider: " + provider);
+		}
+		if (locationManager != null) {
+			Log.d(TAG, "locationManager: " + locationManager.toString());
+			location = locationManager.getLastKnownLocation(provider);
+			locationManager.requestLocationUpdates(provider, LOCATION_MIN_TIME,
+					LOCATION_MIN_DISTANCE, this);
+		}
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		if (locationManager != null) {
+			locationManager.removeUpdates(this);
+		}
+	}
+
 	class PostToTwitter extends AsyncTask<String, Integer, String> {
 
 		@Override
 		protected String doInBackground(String... statuses) {
 			try {
 				YambaApplication yamba = (YambaApplication) getApplication();
-				Twitter.Status status = yamba.getTwitter().updateStatus(statuses[0]);
+				if (location != null) {
+					double latlong[] = { location.getLatitude(),
+							location.getLongitude() };
+					yamba.getTwitter().setMyLocation(latlong);
+					Log.d(TAG, latlong[0] + " : " + latlong[1]);
+				}
+				Twitter.Status status = yamba.getTwitter()
+						.updateStatus(statuses[0]);
 				return status.text;
 			} catch (TwitterException e) {
 				Log.e(TAG, "Twitter set status failed: " + e.toString());
@@ -63,9 +103,11 @@ public class StatusActivity extends BaseActivity implements OnClickListener,
 
 		@Override
 		protected void onPostExecute(String result) {
-			Toast.makeText(StatusActivity.this, result, Toast.LENGTH_LONG)
-					.show();
-			// super.onPostExecute(result);
+			if (location != null) {
+				Toast.makeText(StatusActivity.this, result + location.getLatitude(), Toast.LENGTH_LONG).show();
+			}else{
+				Toast.makeText(StatusActivity.this, result + " provider: " + provider +" no position", Toast.LENGTH_LONG).show();
+			}
 		}
 
 	}
@@ -93,11 +135,36 @@ public class StatusActivity extends BaseActivity implements OnClickListener,
 	}
 
 	@Override
-	public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
-			int arg3) {
+	public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
 	}
 
 	@Override
 	public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
+	}
+
+	@Override
+	public void onLocationChanged(Location location) {
+		this.location = location;
+	}
+
+	@Override
+	public void onProviderDisabled(String provider) {
+		if (this.provider.equals(provider)) {
+			locationManager.removeUpdates(this);
+		}
+	}
+
+	@Override
+	public void onProviderEnabled(String provider) {
+		if (this.provider.equals(provider)) {
+			locationManager.requestLocationUpdates(this.provider,
+					LOCATION_MIN_TIME, LOCATION_MIN_DISTANCE, this);
+		}
+	}
+
+	@Override
+	public void onStatusChanged(String provider, int status, Bundle extras) {
+		// TODO Auto-generated method stub
+
 	}
 }
