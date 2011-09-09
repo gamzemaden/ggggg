@@ -1,92 +1,62 @@
 package com.quan.yamba;
 
-import android.app.Service;
+import android.app.IntentService;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
-import android.os.IBinder;
 import android.util.Log;
 
-public class UpdaterService extends Service {
+public class UpdaterService extends IntentService {
+	private static final String TAG = "UpdaterService";
+
 	public static final String NEW_STATUS_INTENT = "com.quan.yamba.NEW_STATUS";
 	public static final String NEW_STATUS_EXTRA_COUNT = "NEW_STATUS_EXTRA_COUNT";
 	public static final String RECEIVE_TIMELINE_NOTIFICATIONS = "com.quan.yamba.RECEIVE_TIMELINE_NOTIFICATIONS";
 
+	private NotificationManager notificationManager;
+	private Notification notification;
 
-	private static final String TAG = "UpdaterService";
-
-	static final int DELAY = 10000;
-	private boolean runFlag = false;
-	private Updater updater;
-	private YambaApplication yamba;
-
-	SQLiteDatabase db;
-
-	@Override
-	public IBinder onBind(Intent arg0) {
-		// TODO Auto-generated method stub
-		return null;
+	public UpdaterService() {
+		super(TAG);
+		Log.d(TAG, "UpdaterService constructed");
 	}
 
 	@Override
-	public void onCreate() {
-		this.yamba = (YambaApplication) getApplication();
-		this.updater = new Updater();
+	protected void onHandleIntent(Intent intent) {
+		Intent intent2;
+		this.notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+		this.notification = new Notification(android.R.drawable.stat_notify_chat,
+				"", 0);
 
-		Log.d(TAG, "onCreated");
-		super.onCreate();
-	}
+		Log.d(TAG, "onHandleIntent'ing");
 
-	@Override
-	public void onDestroy() {
-		this.runFlag = false;
-		this.updater.interrupt();
-		this.updater = null;
-		this.yamba.setServiceRunning(false);
-
-		Log.d(TAG, "onDestroyed");
-		super.onDestroy();
-	}
-
-	@Override
-	public int onStartCommand(Intent intent, int flags, int startId) {
-		this.runFlag = true;
-		this.updater.start();
-		this.yamba.setServiceRunning(true);
-
-		Log.d(TAG, "OnStarted");
-		return super.onStartCommand(intent, flags, startId);
-	}
-
-	private class Updater extends Thread {
-		Intent intent;
-
-		public Updater() {
-			super("UpdaterService-Updater");
+		YambaApplication yambaApplication = (YambaApplication) getApplication();
+		int newUpdates = yambaApplication.fetchStatusUpdates();
+		if (newUpdates > 0) {
+			Log.d(TAG, "We have a new status");
+			intent2 = new Intent(NEW_STATUS_INTENT);
+			intent2.putExtra(NEW_STATUS_EXTRA_COUNT, newUpdates);
+			sendBroadcast(intent2, RECEIVE_TIMELINE_NOTIFICATIONS);
+			sendTimelineNotification(newUpdates);
 		}
+	}
 
-		@Override
-		public void run() {
-			UpdaterService updaterService = UpdaterService.this;
-			while (updaterService.runFlag) {
-				Log.d(TAG, "Updater running background thread");
-				try {
-					YambaApplication yamba = (YambaApplication) updaterService
-							.getApplication();
-					int newUpdates = yamba.fetchStatusUpdates();
-					if (newUpdates > 0) {
-						Log.d(TAG, "We have a new status");
-						intent = new Intent(NEW_STATUS_INTENT);
-						intent.putExtra(NEW_STATUS_EXTRA_COUNT, newUpdates);
-						updaterService.sendBroadcast(intent,
-								RECEIVE_TIMELINE_NOTIFICATIONS);
-//						updaterService.sendBroadcast(intent);
-					}
-					Thread.sleep(DELAY);
-				} catch (InterruptedException e) {
-					updaterService.runFlag = false;
-				}
-			}
-		}
+	private void sendTimelineNotification(int timelineUpdateCount) {
+		Log.d(TAG, "send TimelineNotification'ing");
+		PendingIntent pendingIntent = PendingIntent.getActivity(this, -1,
+				new Intent(this, TimelineActivity.class),
+				PendingIntent.FLAG_UPDATE_CURRENT);
+		this.notification.when = System.currentTimeMillis();
+		this.notification.flags = Notification.FLAG_AUTO_CANCEL;
+		CharSequence notificationTitle = this
+				.getText(R.string.msgNotificationTitle);
+		CharSequence notificationSummary = String.format(
+				this.getText(R.string.msgNotificationMessage).toString(), timelineUpdateCount);
+		this.notification.setLatestEventInfo(this, notificationTitle,
+				notificationSummary, pendingIntent);
+		this.notificationManager.notify(0, this.notification);
+		Log.d(TAG, "sendTimelineNotificationed");
 	}
 
 }

@@ -20,6 +20,13 @@ public class YambaApplication extends Application implements
 	private SharedPreferences prefs;
 	private StatusData statusData;
 
+	public static final String LOCATION_PROVIDER_NONE = "NONE";
+	public static final long INTERVAL_NEVER = 0;
+
+	public String getProvider() {
+		return prefs.getString("provider", LOCATION_PROVIDER_NONE);
+	}
+
 	public boolean isServiceRunning() {
 		return serviceRunning;
 	}
@@ -73,6 +80,10 @@ public class YambaApplication extends Application implements
 		return statusData;
 	}
 
+	public long getInterval() {
+		return Long.parseLong(prefs.getString("interval", "0"));
+	}
+
 	public SharedPreferences getPrefs() {
 		return prefs;
 	}
@@ -95,8 +106,7 @@ public class YambaApplication extends Application implements
 				long createdAt = status.getCreatedAt().getTime();
 				contentValues.put(StatusData.C_CREATED_AT, createdAt);
 				contentValues.put(StatusData.C_TEXT, status.getText());
-				contentValues
-						.put(StatusData.C_USER, status.getUser().getName());
+				contentValues.put(StatusData.C_USER, status.getUser().getName());
 				Log.d(TAG, "Got update with id " + status.getId() + ". Saving");
 				this.getStatusData().insertOrIgnore(contentValues);
 				if (latestStatusCreatedAtTime < createdAt) {
